@@ -10,4 +10,7 @@
 
 @interface node_ffi_funs_dylib : NSObject
 
+int testInt(void);
+char* testString(void);
+char* AllWindowInfo (void);
 @end
