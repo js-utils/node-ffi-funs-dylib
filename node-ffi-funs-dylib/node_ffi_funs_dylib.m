@@ -10,12 +10,26 @@
 
 @implementation node_ffi_funs_dylib
 
-int testInt(void) {
-    return 1;
+int testInt(int num) {
+    return num;
 }
 
-char* testString(void) {
-    return "123";
+char* testString(char* str) {
+    NSString* pStr = [NSString stringWithUTF8String:str];
+    return (char*)[pStr UTF8String];
+}
+
+bool validateStringWithRegex(NSString* string, NSString* regex) {
+    int location = (int)[string rangeOfString:regex options:NSRegularExpressionSearch].location;
+    return location >= 0;
+}
+
+bool stringIsPresent (NSString* string) {
+ if(string != nil && ![string isEqual:[NSNull null]] && string.length != 0 && ![[string lowercaseString] isEqualToString:@"(null)"])
+    {
+        return YES;
+    }
+    return NO;
 }
 
 
@@ -42,6 +56,27 @@ char* AllWindowInfo () {
 //        }
     }
     return (char*)[multableString UTF8String];
+}
+
+NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerNameReg) {
+    NSString* pWinOwnerName = [NSString stringWithUTF8String:winOwnerNameReg];
+    NSString* pWinName = [NSString stringWithUTF8String:winNameReg];
+    CFArrayRef windowListAll = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+    NSArray* arr = CFBridgingRelease(windowListAll);
+    for (NSMutableDictionary* entry in arr) {
+        if (entry == nil){
+            break;
+        }
+        NSString *wndOwnName=[entry objectForKey:(id)kCGWindowOwnerName];
+        NSString *wndName=[entry objectForKey:(id)kCGWindowName];
+        bool isOwnerFind = !stringIsPresent(pWinOwnerName) || (stringIsPresent(pWinOwnerName) && stringIsPresent(wndOwnName) && validateStringWithRegex(wndOwnName, pWinOwnerName));
+        bool isSelfFind = !stringIsPresent(pWinName) || (stringIsPresent(pWinName) && stringIsPresent(wndName) && validateStringWithRegex(wndName, pWinName));
+        if (isOwnerFind && isSelfFind) {
+            return [NSRunningApplication runningApplicationWithProcessIdentifier:[[entry objectForKey:(id)kCGWindowNumber] intValue]];
+        }
+        
+    }
+    return nil;
 }
 
 @end

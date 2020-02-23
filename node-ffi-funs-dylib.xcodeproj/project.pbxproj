@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		612BF624240276DE005FC6C1 /* node_ffi_funs_dylib.h in Headers */ = {isa = PBXBuildFile; fileRef = 612BF623240276DE005FC6C1 /* node_ffi_funs_dylib.h */; };
 		612BF626240276DE005FC6C1 /* node_ffi_funs_dylib.m in Sources */ = {isa = PBXBuildFile; fileRef = 612BF625240276DE005FC6C1 /* node_ffi_funs_dylib.m */; };
+		612BF6322402BC54005FC6C1 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 612BF6312402BC54005FC6C1 /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		612BF620240276DE005FC6C1 /* libnode-ffi-funs-dylib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libnode-ffi-funs-dylib.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		612BF623240276DE005FC6C1 /* node_ffi_funs_dylib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = node_ffi_funs_dylib.h; sourceTree = "<group>"; };
 		612BF625240276DE005FC6C1 /* node_ffi_funs_dylib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = node_ffi_funs_dylib.m; sourceTree = "<group>"; };
+		612BF6312402BC54005FC6C1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -22,6 +24,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				612BF6322402BC54005FC6C1 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +36,7 @@
 			children = (
 				612BF622240276DE005FC6C1 /* node-ffi-funs-dylib */,
 				612BF621240276DE005FC6C1 /* Products */,
+				612BF62C2402BBF5005FC6C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,6 +55,14 @@
 				612BF625240276DE005FC6C1 /* node_ffi_funs_dylib.m */,
 			);
 			path = "node-ffi-funs-dylib";
+			sourceTree = "<group>";
+		};
+		612BF62C2402BBF5005FC6C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				612BF6312402BC54005FC6C1 /* AppKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

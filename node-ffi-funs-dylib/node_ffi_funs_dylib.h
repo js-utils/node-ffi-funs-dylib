@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <AppKit/AppKit.h>
 @interface node_ffi_funs_dylib : NSObject
 
-int testInt(void);
-char* testString(void);
+int testInt(int num);
+char* testString(char* str);
 char* AllWindowInfo (void);
+// 得到运行的程序窗口
+NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerNameReg);
 @end
