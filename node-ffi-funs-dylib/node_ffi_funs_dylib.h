@@ -15,4 +15,6 @@ char* testString(char* str);
 char* AllWindowInfo (void);
 // 得到运行的程序窗口
 NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerNameReg);
+bool SetForegroundApp(NSRunningApplication *runningApp);
+
 @end

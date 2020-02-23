@@ -72,11 +72,14 @@ NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerName
         bool isOwnerFind = !stringIsPresent(pWinOwnerName) || (stringIsPresent(pWinOwnerName) && stringIsPresent(wndOwnName) && validateStringWithRegex(wndOwnName, pWinOwnerName));
         bool isSelfFind = !stringIsPresent(pWinName) || (stringIsPresent(pWinName) && stringIsPresent(wndName) && validateStringWithRegex(wndName, pWinName));
         if (isOwnerFind && isSelfFind) {
-            return [NSRunningApplication runningApplicationWithProcessIdentifier:[[entry objectForKey:(id)kCGWindowNumber] intValue]];
+            return [NSRunningApplication runningApplicationWithProcessIdentifier:[[entry objectForKey:(id)kCGWindowOwnerPID] intValue]];
         }
         
     }
     return nil;
+}
+bool SetForegroundApp(NSRunningApplication *runningApp) {
+    return [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
 
 @end
