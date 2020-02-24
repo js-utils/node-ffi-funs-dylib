@@ -100,4 +100,11 @@ void PostEventKey(CGKeyCode key, char* flagMask) {
     CFRelease(source);
 }
 
+bool PasteboardCopyString(char* string) {
+    NSString* stringToWrite = [NSString stringWithUTF8String:string];
+    NSPasteboard *pasteBoard = [NSPasteboard generalPasteboard];
+    [pasteBoard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeString] owner:nil];
+    return [pasteBoard setString:stringToWrite forType:NSPasteboardTypeString];
+}
+
 @end

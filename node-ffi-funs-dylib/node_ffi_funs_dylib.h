@@ -19,5 +19,6 @@ NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerName
 bool SetForegroundApp(NSRunningApplication *runningApp);
 // 发送command+key组合键的命令
 void PostEventKey(CGKeyCode key, char* flagMask);
+bool PasteboardCopyString(char* string);
 
 @end
