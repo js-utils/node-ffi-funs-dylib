@@ -64,7 +64,7 @@ char* AllWindowInfoWithPid (int pid) {
     AXUIElementCopyAttributeValues((AXUIElementRef) app, kAXWindowsAttribute, 0, 99999, &result);
     NSArray* arr = CFBridgingRelease(result);
     NSString* string = [NSString stringWithFormat:@"%lu", arr.count];
-     return (char*)[string UTF8String];
+    return (char*)[string UTF8String];
 }
 
 NSMutableDictionary* getWindowWithName(char* winNameReg, char* winOwnerNameReg) {
@@ -94,6 +94,45 @@ int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg) {
        return 0;
    }
    return [[entry objectForKey:(id)kCGWindowOwnerPID] intValue];
+}
+// https://www.cnblogs.com/andrewwang/p/8635292.html
+// https://kb.kutu66.com/objective-c/post_1083773
+// https://hant-kb.kutu66.com/others/post_3862789
+char* GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
+    NSMutableString *multableString = [NSMutableString stringWithString:@""];
+    NSMutableDictionary* entry = getWindowWithName(winNameReg, winOwnerNameReg);
+    if (entry == nil){
+      return nil;
+    }
+    int ownerPid = [[entry objectForKey:(id)kCGWindowOwnerPID] intValue];
+    NSInteger wndNumber=[[entry objectForKey:(id)kCGWindowNumber] intValue];
+    NSString *wndName=[entry objectForKey:(id)kCGWindowName];
+    if (ownerPid == 0) {
+        return nil;
+    }
+    //根据ownerPid获取窗口所属的app
+    AXUIElementRef appRef = AXUIElementCreateApplication(ownerPid);
+    //获取app所有的窗口
+    CFArrayRef windowList;
+    AXUIElementCopyAttributeValue(appRef, kAXWindowsAttribute, (CFTypeRef *)&windowList);
+    CFRelease(appRef);
+    if (windowList) {
+        for (int i=0; i<CFArrayGetCount(windowList); i++){
+            //遍历app所有窗口，查找跟全局遍历所获得窗口的实体
+            AXUIElementRef windowRef = (AXUIElementRef)CFArrayGetValueAtIndex(windowList, i);
+            CGWindowID application_window_id = 0;
+            _AXUIElementGetWindow(windowRef, &application_window_id);
+            //找到
+            if (application_window_id == wndNumber){
+                return windowRef;
+            } else {
+             CFRelease(windowRef);
+            }
+
+        }
+    }
+    return (char*)[multableString UTF8String];
+//    return nil;
 }
 
 NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid) {
@@ -129,4 +168,7 @@ bool PasteboardCopyString(char* string) {
     return [pasteBoard setString:stringToWrite forType:NSPasteboardTypeString];
 }
 
+void ReleaseAXUIElementRef(AXUIElementRef ref) {
+    CFRelease(ref);
+}
 @end
