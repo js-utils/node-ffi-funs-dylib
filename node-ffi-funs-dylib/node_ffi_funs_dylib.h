@@ -15,7 +15,7 @@ char* testString(char* str);
 char* AllWindowInfo (void);
 char* AllWindowInfoWithPid (int pid);
 int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg);
-char* GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg);
+AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg);
 // 得到运行的程序窗口
 NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid);
 // 将app在前端激活

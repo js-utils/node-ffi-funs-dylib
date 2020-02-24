@@ -98,15 +98,14 @@ int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg) {
 // https://www.cnblogs.com/andrewwang/p/8635292.html
 // https://kb.kutu66.com/objective-c/post_1083773
 // https://hant-kb.kutu66.com/others/post_3862789
-char* GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
-    NSMutableString *multableString = [NSMutableString stringWithString:@""];
+AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
     NSMutableDictionary* entry = getWindowWithName(winNameReg, winOwnerNameReg);
     if (entry == nil){
       return nil;
     }
     int ownerPid = [[entry objectForKey:(id)kCGWindowOwnerPID] intValue];
     NSInteger wndNumber=[[entry objectForKey:(id)kCGWindowNumber] intValue];
-    NSString *wndName=[entry objectForKey:(id)kCGWindowName];
+//    NSString *wndName=[entry objectForKey:(id)kCGWindowName];
     if (ownerPid == 0) {
         return nil;
     }
@@ -131,8 +130,7 @@ char* GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
 
         }
     }
-    return (char*)[multableString UTF8String];
-//    return nil;
+    return nil;
 }
 
 NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid) {
