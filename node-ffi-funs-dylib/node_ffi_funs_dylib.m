@@ -58,7 +58,16 @@ char* AllWindowInfo () {
     return (char*)[multableString UTF8String];
 }
 
-NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerNameReg) {
+char* AllWindowInfoWithPid (int pid) {
+    AXUIElementRef app = AXUIElementCreateApplication(pid);
+    CFArrayRef result;
+    AXUIElementCopyAttributeValues((AXUIElementRef) app, kAXWindowsAttribute, 0, 99999, &result);
+    NSArray* arr = CFBridgingRelease(result);
+    NSString* string = [NSString stringWithFormat:@"%lu", arr.count];
+     return (char*)[string UTF8String];
+}
+
+NSMutableDictionary* getWindowWithName(char* winNameReg, char* winOwnerNameReg) {
     NSString* pWinOwnerName = [NSString stringWithUTF8String:winOwnerNameReg];
     NSString* pWinName = [NSString stringWithUTF8String:winNameReg];
     CFArrayRef windowListAll = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
@@ -72,12 +81,25 @@ NSRunningApplication *GetRunningAppWithName(char* winNameReg, char* winOwnerName
         bool isOwnerFind = !stringIsPresent(pWinOwnerName) || (stringIsPresent(pWinOwnerName) && stringIsPresent(wndOwnName) && validateStringWithRegex(wndOwnName, pWinOwnerName));
         bool isSelfFind = !stringIsPresent(pWinName) || (stringIsPresent(pWinName) && stringIsPresent(wndName) && validateStringWithRegex(wndName, pWinName));
         if (isOwnerFind && isSelfFind) {
-            return [NSRunningApplication runningApplicationWithProcessIdentifier:[[entry objectForKey:(id)kCGWindowOwnerPID] intValue]];
+            return entry;
         }
         
     }
     return nil;
 }
+
+int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg) {
+    NSMutableDictionary* entry = getWindowWithName(winNameReg, winOwnerNameReg);
+   if (entry == nil){
+       return 0;
+   }
+   return [[entry objectForKey:(id)kCGWindowOwnerPID] intValue];
+}
+
+NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid) {
+    return [NSRunningApplication runningApplicationWithProcessIdentifier:ownerPid];
+}
+
 bool SetForegroundApp(NSRunningApplication *runningApp) {
     return [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
