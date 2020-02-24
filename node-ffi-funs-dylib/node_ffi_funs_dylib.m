@@ -82,4 +82,22 @@ bool SetForegroundApp(NSRunningApplication *runningApp) {
     return [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
 
+void PostEventKey(CGKeyCode key, char* flagMask) {
+    NSString* pFlagMask = [NSString stringWithUTF8String:flagMask];
+    CGEventSourceRef source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+
+    CGEventRef keyDown = CGEventCreateKeyboardEvent(source, key, TRUE);
+    if (validateStringWithRegex(pFlagMask, @"COMMAND")) {
+        CGEventSetFlags(keyDown, kCGEventFlagMaskCommand);
+    }
+    CGEventRef keyUp = CGEventCreateKeyboardEvent(source, key, FALSE);
+
+    CGEventPost(kCGAnnotatedSessionEventTap, keyDown);
+    CGEventPost(kCGAnnotatedSessionEventTap, keyUp);
+
+    CFRelease(keyUp);
+    CFRelease(keyDown);
+    CFRelease(source);
+}
+
 @end
