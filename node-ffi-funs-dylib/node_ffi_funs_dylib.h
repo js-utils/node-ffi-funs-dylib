@@ -19,6 +19,7 @@ AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg);
 // 得到运行的程序窗口
 NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid);
 // 将app在前端激活
+bool SetForegroundWindowWithWinName(char* winNameReg, char* winOwnerNameReg)
 bool SetForegroundApp(NSRunningApplication *runningApp);
 // 发送command+key组合键的命令
 void PostEventKey(CGKeyCode key, char* flagMask);

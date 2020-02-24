@@ -127,10 +127,25 @@ AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
             } else {
              CFRelease(windowRef);
             }
-
         }
     }
+    //setting new position
+//    AXUIElementSetAttributeValue(windowRef, kAXPositionAttribute, position);
+//    AXUIElementGetAttributeValue();
     return nil;
+}
+
+bool SetForegroundWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
+    int ownerPid = GetOwnerPidWithWinName(winNameReg, winOwnerNameReg);
+    if (ownerPid > 0) {
+        NSRunningApplication * runningApp = GetRunningAppWithOwnerPid(ownerPid);
+        SetForegroundApp(runningApp);
+        AXUIElementRef window = GetWindowWithWinName(winNameReg, winOwnerNameReg);
+        if (window) {
+            return (AXUIElementSetAttributeValue(window, (CFStringRef)NSAccessibilityMainAttribute, kCFBooleanTrue) == kAXErrorSuccess);
+        }
+    }
+    return false;
 }
 
 NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid) {
