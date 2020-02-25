@@ -120,6 +120,7 @@ AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
             //遍历app所有窗口，查找跟全局遍历所获得窗口的实体
             AXUIElementRef windowRef = (AXUIElementRef)CFArrayGetValueAtIndex(windowList, i);
             CGWindowID application_window_id = 0;
+            // https://inneka.com/programming/objective-c/getting-window-number-through-osx-accessibility-api/
             _AXUIElementGetWindow(windowRef, &application_window_id);
             //找到
             if (application_window_id == wndNumber){
