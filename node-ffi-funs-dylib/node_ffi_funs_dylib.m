@@ -88,7 +88,7 @@ NSMutableDictionary* getWindowWithName(char* winNameReg, char* winOwnerNameReg) 
     return nil;
 }
 
-int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg) {
+int GetOwnerPidWithName(char* winNameReg, char* winOwnerNameReg) {
     NSMutableDictionary* entry = getWindowWithName(winNameReg, winOwnerNameReg);
    if (entry == nil){
        return 0;
@@ -98,7 +98,7 @@ int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg) {
 // https://www.cnblogs.com/andrewwang/p/8635292.html
 // https://kb.kutu66.com/objective-c/post_1083773
 // https://hant-kb.kutu66.com/others/post_3862789
-AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
+AXUIElementRef GetWindowWithName(char* winNameReg, char* winOwnerNameReg) {
     NSMutableDictionary* entry = getWindowWithName(winNameReg, winOwnerNameReg);
     if (entry == nil){
       return nil;
@@ -146,12 +146,12 @@ char *GetWindowTitle(AXUIElementRef window) {
     return (char*)[multableString UTF8String];
 }
 
-bool SetForegroundWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
-    int ownerPid = GetOwnerPidWithWinName(winNameReg, winOwnerNameReg);
+bool SetForegroundWindowWithName(char* winNameReg, char* winOwnerNameReg) {
+    int ownerPid = GetOwnerPidWithName(winNameReg, winOwnerNameReg);
     if (ownerPid > 0) {
         NSRunningApplication * runningApp = GetRunningAppWithOwnerPid(ownerPid);
         SetForegroundApp(runningApp);
-        AXUIElementRef window = GetWindowWithWinName(winNameReg, winOwnerNameReg);
+        AXUIElementRef window = GetWindowWithName(winNameReg, winOwnerNameReg);
         if (window) {
             return (AXUIElementSetAttributeValue(window, (CFStringRef)NSAccessibilityMainAttribute, kCFBooleanTrue) == kAXErrorSuccess);
         }

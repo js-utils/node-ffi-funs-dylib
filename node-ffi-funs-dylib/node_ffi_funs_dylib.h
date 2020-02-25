@@ -14,13 +14,13 @@ int testInt(int num);
 char* testString(char* str);
 char* AllWindowInfo (void);
 char* AllWindowInfoWithPid (int pid);
-int GetOwnerPidWithWinName(char* winNameReg, char* winOwnerNameReg);
-AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg);
+int GetOwnerPidWithName(char* winNameReg, char* winOwnerNameReg);
+AXUIElementRef GetWindowWithName(char* winNameReg, char* winOwnerNameReg);
 char *GetWindowTitle(AXUIElementRef window);
 // 得到运行的程序窗口
 NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid);
 // 将app在前端激活
-bool SetForegroundWindowWithWinName(char* winNameReg, char* winOwnerNameReg);
+bool SetForegroundWindowWithName(char* winNameReg, char* winOwnerNameReg);
 bool SetForegroundApp(NSRunningApplication *runningApp);
 // 发送command+key组合键的命令
 void PostEventKey(CGKeyCode key, char* flagMask);
