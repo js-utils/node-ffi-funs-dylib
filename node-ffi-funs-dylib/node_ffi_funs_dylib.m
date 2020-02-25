@@ -125,7 +125,7 @@ AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
             if (application_window_id == wndNumber){
                 return windowRef;
             } else {
-             CFRelease(windowRef);
+                CFRelease(windowRef);
             }
         }
     }
@@ -133,6 +133,16 @@ AXUIElementRef GetWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
 //    AXUIElementSetAttributeValue(windowRef, kAXPositionAttribute, position);
 //    AXUIElementGetAttributeValue();
     return nil;
+}
+
+char *GetWindowTitle(AXUIElementRef window) {
+    NSMutableString *multableString = [NSMutableString stringWithString:@""];
+    CFTypeRef _someProperty;
+    if (AXUIElementCopyAttributeValue(window, (__bridge CFStringRef)NSAccessibilityTitleAttribute, &_someProperty) == kAXErrorSuccess) {
+        NSString* strTitle = CFBridgingRelease(_someProperty);
+        [multableString appendString:strTitle];
+    }
+    return (char*)[multableString UTF8String];
 }
 
 bool SetForegroundWindowWithWinName(char* winNameReg, char* winOwnerNameReg) {
