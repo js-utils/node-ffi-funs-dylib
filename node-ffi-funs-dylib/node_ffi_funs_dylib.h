@@ -22,6 +22,12 @@ NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid);
 // 将app在前端激活
 bool SetForegroundWindowWithName(char* winNameReg, char* winOwnerNameReg);
 bool SetForegroundApp(NSRunningApplication *runningApp);
+// 根据app获取当前激活窗口
+AXUIElementRef GetFocusWindowWithApp (NSRunningApplication *app);
+// 根据ownerPid获取当前激活窗口
+AXUIElementRef GetFocusWindowWithOwnerPid (int ownerPid);
+// 判断两个窗口是否相同
+bool isEqualTwoWindow (AXUIElementRef win1, AXUIElementRef win2);
 // 发送command+key组合键的命令
 void PostEventKey(CGKeyCode key, char* flagMask);
 bool PasteboardCopyString(char* string);

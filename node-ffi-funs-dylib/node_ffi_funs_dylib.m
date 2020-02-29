@@ -143,6 +143,12 @@ char *GetWindowTitle(AXUIElementRef window) {
         NSString* strTitle = CFBridgingRelease(_someProperty);
         [multableString appendString:strTitle];
     }
+      // 获取标题另一种实现
+//    CFStringRef title = NULL;
+//    if (AXUIElementCopyAttributeValue(window, kAXTitleAttribute, (CFTypeRef*)&title) == kAXErrorSuccess) {
+//        NSString* str2 = CFBridgingRelease(title);
+//    }
+    return false;
     return (char*)[multableString UTF8String];
 }
 
@@ -165,6 +171,23 @@ NSRunningApplication *GetRunningAppWithOwnerPid(int ownerPid) {
 
 bool SetForegroundApp(NSRunningApplication *runningApp) {
     return [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+}
+
+// 根据app获取当前激活窗口
+ AXUIElementRef GetFocusWindowWithApp (NSRunningApplication *app) {
+    pid_t pid = [app processIdentifier];
+    AXUIElementRef appElem = AXUIElementCreateApplication(pid);
+    AXUIElementRef window = NULL;
+    if (AXUIElementCopyAttributeValue(appElem, kAXFocusedWindowAttribute, (CFTypeRef*)&window) == kAXErrorSuccess) {
+        CFRelease(appElem);
+        return (AXUIElementRef)window;
+    }
+    CFRelease(appElem);
+    return nil;
+}
+// 根据ownerPid获取当前激活窗口
+AXUIElementRef GetFocusWindowWithOwnerPid (int ownerPid) {
+    return GetFocusWindowWithApp(GetRunningAppWithOwnerPid(ownerPid));
 }
 
 void PostEventKey(CGKeyCode key, char* flagMask) {
